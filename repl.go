@@ -35,27 +35,25 @@ type UI interface {
 }
 
 type REPL struct {
-	src            string       // the whole source code from repl
-	preContext     exec.Context // store the context after exec
-	ip             int          // store the ip after exec
-	normalPrompt   string       // the prompt type in console
-	continuePrompt string
-	continueMode   bool // switch to control the promot type
-	term           UI   // liner instance
+	src          string       // the whole source code from repl
+	preContext   exec.Context // store the context after exec
+	ip           int          // store the ip after exec
+	continueMode bool         // switch to control the promot type
+	term         UI           // liner instance
 }
 
 const (
 	ContinuePrompt string = "... "
-	NormalPrompt string = ">>> "
+	NormalPrompt   string = ">>> "
 )
 
 func New() *REPL {
-	return &REPL{normalPrompt: NormalPrompt, continuePrompt: ContinuePrompt}
+	return &REPL{}
 }
 
 func (r *REPL) SetUI(term UI) {
 	r.term = term
-	term.SetPrompt(r.normalPrompt)
+	term.SetPrompt(NormalPrompt)
 }
 
 // Run handle one line
@@ -76,21 +74,21 @@ func (r *REPL) continueModeByLine(line string) {
 	}
 	// input nothing means jump out continue mode
 	r.continueMode = false
-	r.term.SetPrompt(r.normalPrompt)
+	r.term.SetPrompt(NormalPrompt)
 }
 
 // run execute the input line
 func (r *REPL) run(newLine string) (err error) {
 	src := r.src + newLine + "\n"
 	defer func() {
-		if err == nil {
-			r.src = src
-		}
 		if errR := recover(); errR != nil {
 			r.dumpErr(newLine, errR)
 			err = errors.New("panic err")
 			// TODO: Need a better way to log and show the stack when crash
 			// It is too long to print stack on terminal even only print part of the them; not friendly to user
+		}
+		if err == nil {
+			r.src = src
 		}
 	}()
 	fset := token.NewFileSet()
@@ -99,7 +97,7 @@ func (r *REPL) run(newLine string) (err error) {
 		// check if into continue mode
 		if strings.Contains(err.Error(), `expected ')', found 'EOF'`) ||
 			strings.Contains(err.Error(), "expected '}', found 'EOF'") {
-			r.term.SetPrompt(r.continuePrompt)
+			r.term.SetPrompt(ContinuePrompt)
 			r.continueMode = true
 			err = nil
 			return
