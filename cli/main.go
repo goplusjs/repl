@@ -39,7 +39,7 @@ func (u *LinerUI) Printf(format string, a ...interface{}) {
 }
 
 const (
-	welcome string = "welcome to Go+ console!"
+	welcome string = "Welcome to Go+ console!"
 )
 
 func main() {
@@ -51,7 +51,8 @@ func main() {
 	state.SetMultiLineMode(true)
 
 	ui := &LinerUI{state: liner.NewLiner()}
-	repl := repl.New(ui)
+	repl := repl.New()
+	repl.SetUI(ui)
 	for {
 		line, err := ui.state.Prompt(ui.prompt)
 		if err != nil {

@@ -12,10 +12,8 @@ import (
 	"fmt"
 	"log"
 	"runtime"
+	"syscall/js"
 
-	"syscall/js" // gopherjs to wasm converter shim
-
-	// import required modules
 	"github.com/goplusjs/repl"
 )
 
@@ -39,7 +37,7 @@ var document js.Value
 func getElementById(name string) js.Value {
 	node := document.Call("getElementById", name)
 	if node.IsUndefined() {
-		log.Fatalf("Couldn't find element %q", name)
+		log.Fatalf("Couldn't find element %q\n", name)
 	}
 	return node
 }
@@ -57,7 +55,7 @@ func running() string {
 func main() {
 	document = js.Global().Get("document")
 	if document.IsUndefined() {
-		log.Fatalf("Didn't find document - not running in browser")
+		log.Fatalf("Didn't find document - not running in browser\n")
 	}
 
 	// Clear the loading text
