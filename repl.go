@@ -45,14 +45,17 @@ type REPL struct {
 }
 
 const (
-	continuePrompt string = "... "
-	standardPrompt string = ">>> "
+	ContinuePrompt string = "... "
+	NormalPrompt string = ">>> "
 )
 
-func New(term UI) *REPL {
-	r := &REPL{normalPrompt: standardPrompt, continuePrompt: continuePrompt, term: term}
+func New() *REPL {
+	return &REPL{normalPrompt: NormalPrompt, continuePrompt: ContinuePrompt}
+}
+
+func (r *REPL) SetUI(term UI) {
+	r.term = term
 	term.SetPrompt(r.normalPrompt)
-	return r
 }
 
 // Run handle one line

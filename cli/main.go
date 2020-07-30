@@ -21,10 +21,8 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/peterh/liner"
-
-	_ "github.com/goplus/gop/lib"
 	"github.com/goplusjs/repl"
+	"github.com/peterh/liner"
 )
 
 type LinerUI struct {
