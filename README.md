@@ -5,7 +5,7 @@ This implements a web viewable version of the GoPlus REPL.
 This is done by compiling gpython into wasm and running that in the
 browser.
 
-https://goplusjs.github.io/repl
+https://goplusjs.github.io/repl/
 
 
 ## Build and run
