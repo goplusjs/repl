@@ -1,5 +1,3 @@
-github.com/goplus/gop v0.7.3 h1:EkSHmZ40okwQ1xGVP3Hq7grMuF07lfW1NfrSgVvaQ7k=
-github.com/goplus/gop v0.7.3/go.mod h1:/+1OwExXHm5kGMw0zk+RHQBzgTYRI95ARRGfr62w/VE=
 github.com/mattn/go-runewidth v0.0.3 h1:a+kO+98RDGEfo6asOGMmpodZq4FNtnGP54yps8BzLR4=
 github.com/mattn/go-runewidth v0.0.3/go.mod h1:LwmH8dsx7+W8Uxz3IHJYH5QSwggIsqBzpuz5H//U1FU=
 github.com/peterh/liner v1.2.0 h1:w/UPXyl5GfahFxcTOz2j9wCIHNI+pUPr2laqpojKNCg=

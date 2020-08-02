@@ -14,7 +14,7 @@ import (
 	"runtime"
 	"syscall/js"
 
-	"github.com/goplusjs/repl"
+	"github.com/goplus/repl"
 )
 
 // Implement the replUI interface
