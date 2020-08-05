@@ -12,6 +12,7 @@ import (
 	"fmt"
 	"log"
 	"runtime"
+	"strings"
 	"syscall/js"
 
 	"github.com/goplus/gop/repl"
@@ -31,7 +32,8 @@ func (t *termIO) SetPrompt(prompt string) {
 
 // Print outputs the string to the output
 func (t *termIO) Printf(format string, a ...interface{}) {
-	t.Call("echo", fmt.Sprintf(format, a...))
+	line := fmt.Sprintf(format, a...)
+	t.Call("echo", strings.TrimRight(line, "\n"))
 }
 
 var document js.Value
