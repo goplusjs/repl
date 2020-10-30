@@ -5,16 +5,18 @@ This implements a web viewable version of the GoPlus REPL.
 This is done by compiling gpython into wasm and running that in the
 browser.
 
-https://goplusjs.github.io/repl/
+<https://goplusjs.github.io/repl/>
 
 
 ## Build and run
 
-Run GoPlus REPL for GopherJS/WASM.
-
-`make build` will build with go GopherJS/WASM (you'll need go1.14 minimum)
-
-`make serve` will build and run a local webserver you can see the results on.
+Build GoPlus REPL for GopherJS/WASM
+```
+go get github.com/goplusjs/gopherjs
+git clone https://github.com/goplusjs/repl
+cd repl
+./build_latest.sh
+```
 
 
 ## Thanks
