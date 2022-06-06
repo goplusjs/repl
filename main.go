@@ -4,6 +4,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+//go:build js
 // +build js
 
 package main
@@ -15,9 +16,8 @@ import (
 	"strings"
 	"syscall/js"
 
-	"github.com/goplus/gop/repl"
-
-	_ "github.com/goplus/gop/lib"
+	_ "github.com/goplus/igop/gopbuild"
+	"github.com/goplus/igop/repl"
 )
 
 // Implement the replUI interface
@@ -72,7 +72,9 @@ func main() {
 	node.Get("classList").Call("add", "active")
 
 	// Make a repl referring to an empty term for the moment
-	REPL := repl.New()
+	REPL := repl.NewREPL(0)
+	REPL.SetFileName("main.gop")
+
 	cb := js.FuncOf(func(this js.Value, args []js.Value) interface{} {
 		REPL.Run(args[0].String())
 		return nil
