@@ -82,7 +82,7 @@ func main() {
 
 	// Create a jquery terminal instance
 	opts := js.ValueOf(map[string]interface{}{
-		"greetings": "GoPlus running in your browser with " + tech,
+		"greetings": "Go+ v1.1.0 running in your browser with " + tech,
 		"name":      "goplus",
 		"prompt":    repl.NormalPrompt,
 	})
