@@ -2,7 +2,10 @@ module github.com/goplusjs/repl
 
 go 1.16
 
-require github.com/goplus/igop v0.7.4
+require (
+	github.com/goplus/igop v0.7.4
+	github.com/goplusjs/gopherjs v1.2.5
+)
 
 replace (
 	github.com/goplus/gop => github.com/goplus/gop v1.1.2

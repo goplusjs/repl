@@ -18,6 +18,7 @@ import (
 
 	_ "github.com/goplus/igop/gopbuild"
 	"github.com/goplus/igop/repl"
+	js2 "github.com/goplusjs/gopherjs/js"
 )
 
 // Implement the replUI interface
@@ -56,6 +57,10 @@ func running() string {
 	return "unknown"
 }
 
+const (
+	isGopherJS = runtime.GOARCH == "js"
+)
+
 func main() {
 	document = js.Global().Get("document")
 	if document.IsUndefined() {
@@ -75,8 +80,16 @@ func main() {
 	REPL := repl.NewREPL(0)
 	REPL.SetFileName("main.gop")
 
+	var term *termIO
+
 	cb := js.FuncOf(func(this js.Value, args []js.Value) interface{} {
-		REPL.Run(args[0].String())
+		err := REPL.Run(args[0].String())
+		if isGopherJS {
+			js2.Global.Call("$flushConsole")
+		}
+		if err != nil {
+			term.Printf("%v\n", err)
+		}
 		return nil
 	})
 
@@ -87,12 +100,12 @@ func main() {
 		"prompt":    repl.NormalPrompt,
 	})
 	terminal := js.Global().Call("$", "#term").Call("terminal", cb, opts)
-
+	term = &termIO{terminal}
 	// Send the console log direct to the terminal
 	js.Global().Get("console").Set("log", terminal.Get("echo"))
 
 	// Set the implementation of term
-	REPL.SetUI(&termIO{terminal})
+	REPL.SetUI(term)
 
 	// wait for callbacks
 	select {}
