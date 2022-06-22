@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+  <head>
+<!--        <title>The Go+ REPL</title>-->
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="static/jquery-3.5.1.min.js"></script>
+        <script src="static/jquery.terminal-2.17.6.min.js"></script>
+        <link href="static/jquery.terminal-2.17.6.min.css" rel="stylesheet"/>
+        <style>
+/* position the outer div filling the whole browser window */
+#outer {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    top: 0; right: 0; bottom: 0; left: 0;
+}
+
+/* Terminal output at the top should grow to fill the space */
+#term {
+    order: 0;
+    flex-grow: 1;
+}
+
+/* Navigation bar is fixed size at the bottom */
+#navbar {
+    order: 1;
+    flex-grow: 0;
+    background-color: #333;
+}
+
+/* Style the links inside the navigation bar */
+#navbar a {
+    float: left;
+    color: #fff;
+    text-align: center;
+    padding: 4px 12px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+/* Change the color of links on hover */
+#navbar a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+/* Add a color to the active/current link */
+#navbar a.active {
+    background-color: #4CAF50;
+    color: white;
+}
+        </style>
+  </head>
+  <body>
+    <div id="outer">
+      <div id="term">Loading...</div>
+      <div id="navbar">
+        <a id="GopherJS" href=".">GopherJS</a>
+        <a id="Wasm" href="?wasm">Wasm</a>
+        <a href="https://github.com/goplus/gop" target="_blank">About Go+</a>
+      </div>
+    </div>
+    <script src="loader.js"></script>
+  </body>
+</html>

@@ -15,7 +15,7 @@ Build GoPlus REPL for GopherJS/WASM
 go get github.com/goplusjs/gopherjs
 git clone https://github.com/goplusjs/repl
 cd repl
-./build_latest.sh
+./build.sh
 ```
 
 
