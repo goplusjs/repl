@@ -20,11 +20,18 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	data, err := ioutil.ReadFile("./loader.js")
+	// build index
+	data, err := ioutil.ReadFile("./index_tpl.html")
+	check(err)
+	data = bytes.Replace(data, []byte("loader.js"), []byte("loader"+tag+".js"), 1)
+	err = ioutil.WriteFile("./docs/index.html", data, 0755)
+
+	// build loader.js
+	data, err = ioutil.ReadFile("./loader_tpl.js")
 	check(err)
 
 	data = bytes.Replace(data, []byte("igop"), []byte(tag), 2)
-	err = ioutil.WriteFile("./docs/loader.js", data, 0755)
+	err = ioutil.WriteFile("./docs/loader"+tag+".js", data, 0755)
 	check(err)
 
 	err = build_js("./docs", tag)
