@@ -50,9 +50,9 @@ func getElementById(name string) js.Value {
 func running() string {
 	switch {
 	case runtime.GOOS == "js" && runtime.GOARCH == "wasm":
-		return "go/wasm"
+		return "Wasm"
 	case runtime.GOARCH == "js":
-		return "gopherjs"
+		return "GopherJS"
 	}
 	return "unknown"
 }
@@ -95,7 +95,7 @@ func main() {
 
 	// Create a jquery terminal instance
 	opts := js.ValueOf(map[string]interface{}{
-		"greetings": "Go+ v1.1.2 running in your browser with " + tech,
+		"greetings": "iGo+ v1.1.2 running in your browser with " + tech,
 		"name":      "goplus",
 		"prompt":    repl.NormalPrompt,
 	})
