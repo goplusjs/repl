@@ -33,6 +33,9 @@ func (t *termIO) SetPrompt(prompt string) {
 
 // Print outputs the string to the output
 func (t *termIO) Printf(format string, a ...interface{}) {
+	if isGopherJS {
+		js2.Global.Call("$flushConsole")
+	}
 	line := fmt.Sprintf(format, a...)
 	t.Call("echo", strings.TrimRight(line, "\n"))
 }
@@ -84,9 +87,6 @@ func main() {
 
 	cb := js.FuncOf(func(this js.Value, args []js.Value) interface{} {
 		err := REPL.Run(args[0].String())
-		if isGopherJS {
-			js2.Global.Call("$flushConsole")
-		}
 		if err != nil {
 			term.Printf("%v\n", err)
 		}
