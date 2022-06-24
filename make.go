@@ -23,21 +23,21 @@ func main() {
 	// build index
 	data, err := ioutil.ReadFile("./index_tpl.html")
 	check(err)
-	data = bytes.Replace(data, []byte("loader.js"), []byte("loader"+tag+".js"), 1)
+	data = bytes.Replace(data, []byte("loader.js"), []byte("loader_"+tag+".js"), 1)
 	err = ioutil.WriteFile("./docs/index.html", data, 0755)
 
 	// build loader.js
 	data, err = ioutil.ReadFile("./loader_tpl.js")
 	check(err)
 
-	data = bytes.Replace(data, []byte("igop"), []byte(tag), 2)
-	err = ioutil.WriteFile("./docs/loader"+tag+".js", data, 0755)
+	data = bytes.Replace(data, []byte("igop"), []byte("igop_"+tag), 2)
+	err = ioutil.WriteFile("./docs/loader_"+tag+".js", data, 0755)
 	check(err)
 
-	err = build_js("./docs", tag)
+	err = build_js("./docs", "igop_"+tag)
 	check(err)
 
-	err = build_wasm("./docs", tag)
+	err = build_wasm("./docs", "igop_"+tag)
 	check(err)
 }
 
@@ -56,7 +56,7 @@ func getHash() (string, error) {
 		}
 		h.Write(data)
 	}
-	return fmt.Sprintf("%x", h.Sum(nil)), nil
+	return fmt.Sprintf("%x", h.Sum(nil)[:4]), nil
 	// cmd := exec.Command("git", "describe", "--tag")
 	// return cmd.Output()
 }
