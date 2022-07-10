@@ -93,11 +93,15 @@ func main() {
 		return nil
 	})
 
+	gopVersion := getElementById("GopVersion").Get("innerHTML").String()
+	iGopVersion := getElementById("iGopVersion").Get("innerHTML").String()
+
 	// Create a jquery terminal instance
 	opts := js.ValueOf(map[string]interface{}{
-		"greetings": "iGo+ v1.1.2 running in your browser with " + tech,
-		"name":      "goplus",
-		"prompt":    repl.NormalPrompt,
+		"greetings": fmt.Sprintf("iGo+ %v (gop version %v) running in your browser with %v",
+			iGopVersion, gopVersion, tech),
+		"name":   "goplus",
+		"prompt": repl.NormalPrompt,
 	})
 	terminal := js.Global().Call("$", "#term").Call("terminal", cb, opts)
 	term = &termIO{terminal}
@@ -110,3 +114,8 @@ func main() {
 	// wait for callbacks
 	select {}
 }
+
+var (
+	GopVersion  = "v1.1.2"
+	iGopVersion = "v0.7.7"
+)

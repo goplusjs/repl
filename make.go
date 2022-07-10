@@ -6,16 +6,46 @@ package main
 import (
 	"bytes"
 	"crypto/md5"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"time"
 )
 
+type Module struct {
+	Path      string
+	Version   string
+	Time      time.Time
+	Dir       string
+	GoMod     string
+	GoVerison string
+}
+
+func getModule(path string) (*Module, error) {
+	cmd := exec.Command("go", "list", "-m", "-json", path)
+	data, err := cmd.Output()
+	if err != nil {
+		return nil, err
+	}
+	var m Module
+	err = json.Unmarshal(data, &m)
+	if err != nil {
+		return nil, err
+	}
+	return &m, err
+}
+
 func main() {
+	gop, err := getModule("github.com/goplus/gop")
+	check(err)
+	igop, _ := getModule("github.com/goplus/igop")
+	check(err)
+
 	tag, err := getHash()
-	fmt.Println(tag)
+	fmt.Println(tag, gop.Version, igop.Version)
 
 	if err != nil {
 		panic(err)
@@ -24,6 +54,8 @@ func main() {
 	data, err := ioutil.ReadFile("./index_tpl.html")
 	check(err)
 	data = bytes.Replace(data, []byte("loader.js"), []byte("loader_"+tag+".js"), 1)
+	data = bytes.Replace(data, []byte("$GopVersion"), []byte(gop.Version), 1)
+	data = bytes.Replace(data, []byte("$iGopVersion"), []byte(igop.Version), 1)
 	err = ioutil.WriteFile("./docs/index.html", data, 0755)
 
 	// build loader.js
