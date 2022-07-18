@@ -3,7 +3,7 @@ module github.com/goplusjs/repl
 go 1.16
 
 require (
-	github.com/goplus/igop v0.7.7
+	github.com/goplus/igop v0.7.10
 	github.com/goplusjs/gopherjs v1.2.5
 )
 
