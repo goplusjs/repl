@@ -16,7 +16,6 @@ import (
 	"strings"
 	"syscall/js"
 
-	gojs "github.com/gopherjs/gopherjs/js"
 	_ "github.com/goplus/igop/gopbuild"
 	"github.com/goplus/igop/repl"
 )
@@ -33,9 +32,6 @@ func (t *termIO) SetPrompt(prompt string) {
 
 // Print outputs the string to the output
 func (t *termIO) Printf(format string, a ...interface{}) {
-	if isGopherJS {
-		gojs.Global.Call("$flushConsole")
-	}
 	line := fmt.Sprintf(format, a...)
 	t.Call("echo", strings.TrimRight(line, "\n"))
 }
@@ -54,7 +50,7 @@ func running() string {
 	switch {
 	case runtime.GOOS == "js" && runtime.GOARCH == "wasm":
 		return "Wasm"
-	case runtime.GOARCH == "ecmascript":
+	case runtime.Compiler == "gopherjs":
 		return "GopherJS"
 	}
 	return "unknown"
