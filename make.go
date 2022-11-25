@@ -100,6 +100,8 @@ func build_js(dir, tag string) error {
 	cmd := exec.Command("gopherjs", "build", "-v", "-m", "-o", filepath.Join(dir, tag+".js"))
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
+	env := os.Environ()
+	cmd.Env = append(env, "GOARCH=ecmascript", "GOOS=js")
 	return cmd.Run()
 }
 

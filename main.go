@@ -16,9 +16,9 @@ import (
 	"strings"
 	"syscall/js"
 
+	gojs "github.com/gopherjs/gopherjs/js"
 	_ "github.com/goplus/igop/gopbuild"
 	"github.com/goplus/igop/repl"
-	js2 "github.com/goplusjs/gopherjs/js"
 )
 
 // Implement the replUI interface
@@ -34,7 +34,7 @@ func (t *termIO) SetPrompt(prompt string) {
 // Print outputs the string to the output
 func (t *termIO) Printf(format string, a ...interface{}) {
 	if isGopherJS {
-		js2.Global.Call("$flushConsole")
+		gojs.Global.Call("$flushConsole")
 	}
 	line := fmt.Sprintf(format, a...)
 	t.Call("echo", strings.TrimRight(line, "\n"))
@@ -54,14 +54,14 @@ func running() string {
 	switch {
 	case runtime.GOOS == "js" && runtime.GOARCH == "wasm":
 		return "Wasm"
-	case runtime.GOARCH == "js":
+	case runtime.GOARCH == "ecmascript":
 		return "GopherJS"
 	}
 	return "unknown"
 }
 
 const (
-	isGopherJS = runtime.GOARCH == "js"
+	isGopherJS = runtime.GOARCH == "ecmascript"
 )
 
 func main() {
@@ -117,5 +117,5 @@ func main() {
 
 var (
 	GopVersion  = "v1.1.2"
-	iGopVersion = "v0.7.7"
+	iGopVersion = "v0.9.4"
 )
