@@ -16,6 +16,8 @@ import (
 	"strings"
 	"syscall/js"
 
+	"github.com/goplus/igop"
+
 	_ "github.com/goplus/igop/gopbuild"
 	"github.com/goplus/igop/repl"
 )
@@ -72,6 +74,8 @@ func main() {
 
 	// work out what we are running on and mark active
 	tech := running()
+	gopVersion := getElementById("GopVersion").Get("innerHTML").String()
+	iGopVersion := getElementById("iGopVersion").Get("innerHTML").String()
 	node := getElementById(tech)
 	node.Get("classList").Call("add", "active")
 
@@ -80,6 +84,31 @@ func main() {
 	REPL.SetFileName("main.gop")
 
 	var term *termIO
+	gopCheck := js.Global().Call("$", "#enableGoplus")
+
+	getGreetings := func(gop bool) string {
+		var mode string
+		if gop {
+			mode = "Go+"
+		} else {
+			mode = "Go"
+		}
+		return fmt.Sprintf("iGo+ %v (%v, gop %v) running in your browser with %v. (%v Mode)",
+			iGopVersion, runtime.Version(), gopVersion, tech, mode)
+	}
+
+	gopCheck.Call("change", js.FuncOf(func(this js.Value, args []js.Value) interface{} {
+		REPL.Repl = igop.NewRepl(igop.NewContext(0))
+		gop := this.Get("checked").Bool()
+		if gop {
+			REPL.SetFileName("main.gop")
+		} else {
+			REPL.SetFileName("main.go")
+		}
+		term.Call("clear")
+		term.Call("echo", getGreetings(gop))
+		return nil
+	}))
 
 	cb := js.FuncOf(func(this js.Value, args []js.Value) interface{} {
 		err := REPL.Run(args[0].String())
@@ -89,15 +118,12 @@ func main() {
 		return nil
 	})
 
-	gopVersion := getElementById("GopVersion").Get("innerHTML").String()
-	iGopVersion := getElementById("iGopVersion").Get("innerHTML").String()
-
 	// Create a jquery terminal instance
 	opts := js.ValueOf(map[string]interface{}{
-		"greetings": fmt.Sprintf("iGo+ %v (gop version %v) running in your browser with %v",
-			iGopVersion, gopVersion, tech),
-		"name":   "goplus",
-		"prompt": repl.NormalPrompt,
+		"greetings": getGreetings(true),
+		"name":      "goplus",
+		"prompt":    repl.NormalPrompt,
+		"clear":     true,
 	})
 	terminal := js.Global().Call("$", "#term").Call("terminal", cb, opts)
 	term = &termIO{terminal}
