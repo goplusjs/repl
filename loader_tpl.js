@@ -1,7 +1,7 @@
 // Set the default global log for use by wasm_exec.js
 go_log = console.log;
 
-var useWasm = location.href.includes("?wasm");
+var useWasm = true;//location.href.includes("?wasm");
 
 console.log("useWasm =", useWasm);
 
