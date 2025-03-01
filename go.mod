@@ -2,12 +2,14 @@ module github.com/goplusjs/repl
 
 go 1.23
 
-require github.com/goplus/igop v0.32.1
+require (
+	github.com/goplus/gop v1.3.5
+	github.com/goplus/igop v0.32.1
+)
 
 require (
 	github.com/gopherjs/gopherjs v0.0.0-20200217142428-fce0ec30dd00 // indirect
 	github.com/goplus/gogen v1.16.6 // indirect
-	github.com/goplus/gop v1.3.2 // indirect
 	github.com/goplus/mod v0.13.17 // indirect
 	github.com/goplus/reflectx v1.3.2 // indirect
 	github.com/qiniu/x v1.13.12 // indirect
