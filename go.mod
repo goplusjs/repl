@@ -4,7 +4,7 @@ go 1.23
 
 require (
 	github.com/goplus/gop v1.3.5
-	github.com/goplus/igop v0.32.1
+	github.com/goplus/igop v0.33.0
 )
 
 require (
@@ -22,4 +22,4 @@ require (
 	golang.org/x/tools v0.29.0 // indirect
 )
 
-replace github.com/goplus/gop => github.com/goplus/gop v1.2.0-pre.1.0.20250303120052-edb11c689012
+replace github.com/goplus/gop => github.com/goplus/gop v1.2.0-pre.1.0.20250311071231-9461e7cc07ce
