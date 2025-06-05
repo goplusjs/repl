@@ -39,9 +39,9 @@ func getModule(path string) (*Module, error) {
 }
 
 func main() {
-	gop, err := getModule("github.com/goplus/gop")
+	gop, err := getModule("github.com/goplus/xgo")
 	check(err)
-	igop, _ := getModule("github.com/goplus/igop")
+	igop, _ := getModule("github.com/goplus/ixgo")
 	check(err)
 
 	tag, err := getHash()
@@ -62,14 +62,14 @@ func main() {
 	data, err = ioutil.ReadFile("./loader_tpl.js")
 	check(err)
 
-	data = bytes.Replace(data, []byte("igop"), []byte("igop_"+tag), 2)
+	data = bytes.Replace(data, []byte("igop"), []byte("ixgo_"+tag), 2)
 	err = ioutil.WriteFile("./docs/loader_"+tag+".js", data, 0755)
 	check(err)
 
-	// err = build_js("./docs", "igop_"+tag)
+	// err = build_js("./docs", "ixgo_"+tag)
 	// check(err)
 
-	err = build_wasm("./docs", "igop_"+tag)
+	err = build_wasm("./docs", "ixgo_"+tag)
 	check(err)
 }
 
