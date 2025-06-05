@@ -16,10 +16,9 @@ import (
 	"strings"
 	"syscall/js"
 
-	"github.com/goplus/igop"
-
-	_ "github.com/goplus/igop/gopbuild"
-	"github.com/goplus/igop/repl"
+	"github.com/goplus/ixgo"
+	"github.com/goplus/ixgo/repl"
+	_ "github.com/goplus/ixgo/xgobuild"
 )
 
 // Implement the replUI interface
@@ -89,16 +88,16 @@ func main() {
 	getGreetings := func(gop bool) string {
 		var mode string
 		if gop {
-			mode = "Go+"
+			mode = "XGo"
 		} else {
 			mode = "Go"
 		}
-		return fmt.Sprintf("iGo+ %v (%v, gop %v) running in your browser with %v. (%v Mode)",
+		return fmt.Sprintf("iXGo %v (%v, gop %v) running in your browser with %v. (%v Mode)",
 			iGopVersion, runtime.Version(), gopVersion, tech, mode)
 	}
 
 	gopCheck.Call("change", js.FuncOf(func(this js.Value, args []js.Value) interface{} {
-		REPL.Repl = igop.NewRepl(igop.NewContext(0))
+		REPL.Repl = ixgo.NewRepl(ixgo.NewContext(0))
 		gop := this.Get("checked").Bool()
 		if gop {
 			REPL.SetFileName("main.gop")
