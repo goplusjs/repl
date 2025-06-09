@@ -92,7 +92,7 @@ func main() {
 		} else {
 			mode = "Go"
 		}
-		return fmt.Sprintf("iXGo %v (%v, gop %v) running in your browser with %v. (%v Mode)",
+		return fmt.Sprintf("iXGo %v (%v, XGo %v) running in your browser with %v. (%v Mode)",
 			iGopVersion, runtime.Version(), gopVersion, tech, mode)
 	}
 
