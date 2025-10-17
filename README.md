@@ -1,6 +1,6 @@
-# repl.goplus.org
+# repl.xgo.dev
 
-This implements a web viewable version of the GoPlus REPL.
+This implements a web viewable version of the XGo REPL.
 
 This is done by compiling gpython into wasm and running that in the
 browser.
