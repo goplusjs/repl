@@ -10,9 +10,8 @@ browser.
 
 ## Build and run
 
-Build GoPlus REPL for GopherJS/WASM
+Build GoPlus REPL for WASM
 ```
-go get github.com/goplusjs/gopherjs
 git clone https://github.com/goplusjs/repl
 cd repl
 ./build.sh
