@@ -80,7 +80,7 @@ func main() {
 
 	// Make a repl referring to an empty term for the moment
 	REPL := repl.NewREPL(0)
-	REPL.SetFileName("main.gop")
+	REPL.SetFileName("main.xgo")
 
 	var term *termIO
 	gopCheck := js.Global().Call("$", "#enableGoplus")
@@ -100,7 +100,7 @@ func main() {
 		REPL.Repl = ixgo.NewRepl(ixgo.NewContext(0))
 		gop := this.Get("checked").Bool()
 		if gop {
-			REPL.SetFileName("main.gop")
+			REPL.SetFileName("main.xgo")
 		} else {
 			REPL.SetFileName("main.go")
 		}
