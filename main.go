@@ -73,8 +73,9 @@ func main() {
 
 	// work out what we are running on and mark active
 	tech := running()
-	gopVersion := getElementById("GopVersion").Get("innerHTML").String()
-	iGopVersion := getElementById("iGopVersion").Get("innerHTML").String()
+	xgoVersion := getElementById("XgoVersion").Get("innerHTML").String()
+	ixgoVersion := getElementById("ixgoVersion").Get("innerHTML").String()
+	goVersion := getElementById("GoVersion").Get("innerHTML").String()
 	node := getElementById(tech)
 	node.Get("classList").Call("add", "active")
 
@@ -92,8 +93,8 @@ func main() {
 		} else {
 			mode = "Go"
 		}
-		return fmt.Sprintf("iXGo %v (%v, XGo %v) running in your browser with %v. (%v Mode)",
-			iGopVersion, runtime.Version(), gopVersion, tech, mode)
+		return fmt.Sprintf("iXGo %v ( XGo %v / %v ) running in your browser with %v. (%v Mode)",
+			ixgoVersion, xgoVersion, goVersion, tech, mode)
 	}
 
 	gopCheck.Call("change", js.FuncOf(func(this js.Value, args []js.Value) interface{} {
@@ -137,6 +138,6 @@ func main() {
 }
 
 var (
-	GopVersion  = "v1.1.2"
-	iGopVersion = "v0.9.4"
+	XgoVersion = "v1.1.2"
+	ixgoVersion = "v0.9.4"
 )
