@@ -12,6 +12,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"time"
 )
 
@@ -21,11 +22,12 @@ type Module struct {
 	Time      time.Time
 	Dir       string
 	GoMod     string
-	GoVerison string
+	GoVersion string
 }
 
 func getModule(path string) (*Module, error) {
 	cmd := exec.Command("go", "list", "-m", "-json", path)
+	cmd.Env = append(os.Environ(), "GOWORK=off")
 	data, err := cmd.Output()
 	if err != nil {
 		return nil, err
@@ -35,17 +37,20 @@ func getModule(path string) (*Module, error) {
 	if err != nil {
 		return nil, err
 	}
+	if m.Version == "" {
+		m.Version = getLocalModuleVersion(m.Dir)
+	}
 	return &m, err
 }
 
 func main() {
-	gop, err := getModule("github.com/goplus/xgo")
+	xgo, err := getModule("github.com/goplus/xgo")
 	check(err)
-	igop, _ := getModule("github.com/goplus/ixgo")
+	ixgo, err := getModule("github.com/goplus/ixgo")
 	check(err)
 
 	tag, err := getHash()
-	fmt.Println(tag, gop.Version, igop.Version)
+	fmt.Println(tag, xgo.Version, ixgo.Version)
 
 	if err != nil {
 		panic(err)
@@ -54,8 +59,9 @@ func main() {
 	data, err := ioutil.ReadFile("./index_tpl.html")
 	check(err)
 	data = bytes.Replace(data, []byte("loader.js"), []byte("loader_"+tag+".js"), 1)
-	data = bytes.Replace(data, []byte("$GopVersion"), []byte(gop.Version), 1)
-	data = bytes.Replace(data, []byte("$iGopVersion"), []byte(igop.Version), 1)
+	data = bytes.Replace(data, []byte("$XgoVersion"), []byte(xgo.Version), 1)
+	data = bytes.Replace(data, []byte("$ixgoVersion"), []byte(ixgo.Version), 1)
+	data = bytes.Replace(data, []byte("$GoVersion"), []byte("Go "+goVersion()), 1)
 	err = ioutil.WriteFile("./docs/index.html", data, 0755)
 
 	// build loader.js
@@ -71,6 +77,26 @@ func main() {
 
 	err = build_wasm("./docs", "ixgo_"+tag)
 	check(err)
+}
+
+func goVersion() string {
+	version := runtime.Version()
+	if len(version) > 2 && version[:2] == "go" {
+		return version[2:]
+	}
+	return version
+}
+
+func getLocalModuleVersion(dir string) string {
+	if dir != "" {
+		cmd := exec.Command("git", "-C", dir, "describe", "--tags", "--always", "--dirty")
+		if data, err := cmd.Output(); err == nil {
+			if version := string(bytes.TrimSpace(data)); version != "" {
+				return version
+			}
+		}
+	}
+	return "(devel)"
 }
 
 func check(err error) {
