@@ -2,7 +2,7 @@ module github.com/goplusjs/repl
 
 go 1.25.0
 
-require github.com/goplus/ixgo v1.1.6
+require github.com/goplus/ixgo v1.1.7
 
 require (
 	github.com/goccy/go-yaml v1.19.2 // indirect
